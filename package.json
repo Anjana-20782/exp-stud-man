@@ -1,0 +1,22 @@
+{
+  "name": "express-students-managment",
+  "version": "1.0.0",
+  "description": "task test example",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^8.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

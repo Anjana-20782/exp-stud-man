@@ -17,6 +17,10 @@ const s1Input = document.getElementById('subject1');
 const s2Input = document.getElementById('subject2');
 const s3Input = document.getElementById('subject3');
 
+// Accordion functionality
+const marksAccordion = document.getElementById('marks-accordion');
+const marksContent = document.getElementById('marks-content');
+
 async function fetchStudents() {
   const res = await fetch(API_BASE);
   const data = await res.json();
@@ -155,6 +159,12 @@ async function onDelete(e) {
     console.error(err);
   }
 }
+
+// Accordion toggle functionality
+marksAccordion.addEventListener('click', () => {
+  marksAccordion.classList.toggle('collapsed');
+  marksContent.classList.toggle('collapsed');
+});
 
 // initial load
 fetchStudents();

@@ -24,24 +24,29 @@
           <input id="email" type="email" required />
         </div>
         <div>
-          <label>Roll N0:</label>
+          <label>Roll Number</label>
           <input id="rollNumber" required />
         </div>
-        <fieldset>
-          <legend>Marks</legend>
-          <div>
-            <label>Physics</label>
-            <input id="subject1" type="number" min="0" max="100" value="0" required />
+        <div class="accordion">
+          <div class="accordion-header" id="marks-accordion">
+            <span>Marks</span>
+            <span class="accordion-icon">▼</span>
           </div>
-          <div>
-            <label>Chemistry</label>
-            <input id="subject2" type="number" min="0" max="100" value="0" required />
+          <div class="accordion-content" id="marks-content">
+            <div>
+              <label>Physics</label>
+              <input id="subject1" type="number" min="0" max="100" value="0" required />
+            </div>
+            <div>
+              <label>Chemistry</label>
+              <input id="subject2" type="number" min="0" max="100" value="0" required />
+            </div>
+            <div>
+              <label>Biology</label>
+              <input id="subject3" type="number" min="0" max="100" value="0" required />
+            </div>
           </div>
-          <div>
-            <label>Biology</label>
-            <input id="subject3" type="number" min="0" max="100" value="0" required />
-          </div>
-        </fieldset>
+        </div>
         <button type="submit" id="save-btn">Save</button>
         <button type="button" id="cancel-btn" style="display:none">Cancel</button>
       </form>
@@ -58,7 +63,7 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Roll Number</th>
+              <th>Roll No</th>
               <th>Email</th>
               <th>Physics</th>
               <th>Chemistry</th>

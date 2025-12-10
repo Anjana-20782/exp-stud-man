@@ -65,15 +65,52 @@ input {
   font-size:16px;
 }
 
-/* Fieldset */
-fieldset { 
-  padding: 20px; 
-  border-radius: 8px; 
+/* Accordion */
+.accordion {
   margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
 }
-legend {
-  padding: 0 8px;
+
+.accordion-header {
+  background: #f8f9fa;
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: 600;
+  color: #333;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover {
+  background: #e9ecef;
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
+  font-size: 12px;
+}
+
+.accordion-header.collapsed .accordion-icon {
+  transform: rotate(-90deg);
+}
+
+.accordion-content {
+  max-height: 500px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding: 0 20px 20px 20px;
+}
+
+.accordion-content.collapsed {
+  max-height: 0;
+  padding: 0 20px;
 }
 
 /* Buttons */

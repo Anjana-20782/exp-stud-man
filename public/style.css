@@ -9,7 +9,7 @@ body {
 
 /* Container box */
 .container { 
-  max-width: 900px; 
+  max-width: 1000px; 
   margin: 0 auto; 
   background: #fff; 
   padding: 30px; 
@@ -104,7 +104,6 @@ button.delete-btn {
 
 /* Table container for responsiveness */
 .table-container {
-  overflow-x: auto;
   width: 100%;
 }
 

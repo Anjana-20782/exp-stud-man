@@ -173,6 +173,9 @@ input {
   border-radius: 4px;
   font-size: 14px;
   min-width: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 /* Buttons */

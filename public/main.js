@@ -25,27 +25,31 @@ async function fetchStudents() {
 
 function renderStudents(students) {
   if (!Array.isArray(students)) {
-    studentsList.innerHTML = '<p>No students found.</p>';
+    studentsList.innerHTML = '<tr><td colspan="8" style="text-align: center;">No students found.</td></tr>';
     return;
   }
-  studentsList.innerHTML = students.map(s => studentCard(s)).join('');
+  studentsList.innerHTML = students.map(s => studentRow(s)).join('');
   // attach event listeners after render
   document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', onEdit));
   document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', onDelete));
 }
 
-function studentCard(s) {
+function studentRow(s) {
   const total = (s.marks?.subject1 || 0) + (s.marks?.subject2 || 0) + (s.marks?.subject3 || 0);
   return `
-    <div class="student-card" data-id="${s._id}">
-      <div><strong>${escapeHtml(s.name)}</strong> (${escapeHtml(s.rollNumber)})</div>
-      <div>${escapeHtml(s.email)}</div>
-      <div>Marks: ${s.marks?.subject1 ?? 0} / ${s.marks?.subject2 ?? 0} / ${s.marks?.subject3 ?? 0} — Total: ${total}</div>
-      <div class="actions">
+    <tr data-id="${s._id}">
+      <td>${escapeHtml(s.name)}</td>
+      <td>${escapeHtml(s.rollNumber)}</td>
+      <td>${escapeHtml(s.email)}</td>
+      <td>${s.marks?.subject1 ?? 0}</td>
+      <td>${s.marks?.subject2 ?? 0}</td>
+      <td>${s.marks?.subject3 ?? 0}</td>
+      <td><strong>${total}</strong></td>
+      <td class="actions">
         <button class="edit-btn" data-id="${s._id}">Edit</button>
         <button class="delete-btn" data-id="${s._id}">Delete</button>
-      </div>
-    </div>
+      </td>
+    </tr>
   `;
 }
 

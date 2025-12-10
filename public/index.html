@@ -30,15 +30,15 @@
         <fieldset>
           <legend>Marks</legend>
           <div>
-            <label>Subject 1</label>
+            <label>Physics</label>
             <input id="subject1" type="number" min="0" max="100" value="0" required />
           </div>
           <div>
-            <label>Subject 2</label>
+            <label>Chemistry</label>
             <input id="subject2" type="number" min="0" max="100" value="0" required />
           </div>
           <div>
-            <label>Subject 3</label>
+            <label>Biology</label>
             <input id="subject3" type="number" min="0" max="100" value="0" required />
           </div>
         </fieldset>
@@ -48,8 +48,11 @@
     </section>
 
     <!-- Student list -->
-    <section>
-      <h2>All Students</h2>
+    <section class="students-section">
+      <div class="section-header">
+        <h2>All Students</h2>
+        <div class="section-decoration"></div>
+      </div>
       <div class="table-container">
         <table id="students-table">
           <thead>
@@ -57,9 +60,9 @@
               <th>Name</th>
               <th>Roll Number</th>
               <th>Email</th>
-              <th>Subject 1</th>
-              <th>Subject 2</th>
-              <th>Subject 3</th>
+              <th>Physics</th>
+              <th>Chemistry</th>
+              <th>Biology</th>
               <th>Total</th>
               <th>Actions</th>
             </tr>

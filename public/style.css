@@ -18,16 +18,36 @@ body {
 }
 
 /* Titles */
-h1 { 
-  margin-bottom: 24px; 
-  font-size: 34px; 
+h1 {
+  margin-bottom: 24px;
+  font-size: 34px;
   font-weight: 700;
   text-align: center;
 }
-h2 { 
-  margin: 24px 0 16px 0; 
-  font-size: 20px; 
+h2 {
+  margin: 24px 0 16px 0;
+  font-size: 20px;
   font-weight: 800;
+}
+
+/* Students section styling */
+.students-section {
+  position: relative;
+  margin-top: 40px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-decoration {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, #2ea44f, #0366d6);
+  margin-left: 20px;
+  border-radius: 1px;
 }
 
 /* Input spacing */

@@ -34,11 +34,6 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// catch-all to serve index.html (single page) for any unknown route (optional)
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
-
 // listen on port 4000 (or from env)
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

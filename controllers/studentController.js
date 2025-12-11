@@ -6,7 +6,7 @@ import Student from '../models/Student.js';
 // GET /api/students
 export const getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find().sort({ createdAt: -1 });
+    const students = await Student.find().sort({ rollNumber: 1 });
     res.json(students);
   } catch (err) {
     console.error('getAllStudents error:', err);

@@ -1,12 +1,14 @@
+// auth.js
+
 async function register() {
   const res = await fetch("/api/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-   body: JSON.stringify({
-  name: document.getElementById("username").value,
-  email: document.getElementById("email").value,
-  password: document.getElementById("password").value
-})
+    body: JSON.stringify({
+      name: document.getElementById("username").value, // changed from username → name
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    })
   });
 
   const data = await res.json();
@@ -24,10 +26,11 @@ async function login() {
   });
 
   const data = await res.json();
+
   if (res.ok) {
-    localStorage.setItem("token", data.token);
+    localStorage.setItem("token", data.token); // store JWT
     alert("Login Success!");
-    window.location.href = "/"; // student page
+    window.location.href = "/index.html"; // redirect to student page
   } else {
     alert(data.message);
   }

@@ -1,61 +1,58 @@
-import User from '../models/User.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
-export const registerUser = async (req, res) => {
+
+// controllers/studentController.js
+import Student from '../models/Student.js';
+
+// GET /api/students
+export const getAllStudents = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-
-    // already exists?
-    const existing = await User.findOne({ email });
-    if (existing) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-
-    // hash password
-    const hashed = await bcrypt.hash(password, 10);
-
-    const user = new User({
-      name,
-      email,
-      password: hashed
-    });
-
-    await user.save();
-
-    res.json({ message: 'Registration successful' });
-
+    const students = await Student.find().sort({ rollNumber: 1 });
+    res.json(students);
   } catch (err) {
-    console.error('Register error:', err);
+    console.error('getAllStudents error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-export const loginUser = async (req, res) => {
+// GET /api/students/:id
+export const getStudentById = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
-
-    // compare password
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: 'Invalid credentials' });
-
-    // create token
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    res.json({
-      message: 'Login successful',
-      token
-    });
-
+    const student = await Student.findById(req.params.id);
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    res.json(student);
   } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// POST /api/students
+export const createStudent = async (req, res) => {
+  try {
+    const student = new Student(req.body);
+    await student.save();
+    res.status(201).json(student);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// PUT /api/students/:id
+export const updateStudent = async (req, res) => {
+  try {
+    const student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    res.json(student);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// DELETE /api/students/:id
+export const deleteStudent = async (req, res) => {
+  try {
+    const student = await Student.findByIdAndDelete(req.params.id);
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    res.json({ message: 'Student deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

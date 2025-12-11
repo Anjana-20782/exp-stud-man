@@ -37,3 +37,4 @@ router.put('/:id', verifyToken, updateStudent);
 router.delete('/:id', verifyToken, deleteStudent);
 
 export default router;
+

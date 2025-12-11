@@ -18,7 +18,6 @@
 // export default router;
 
 
-// routes/studentRoutes.js
 import express from 'express';
 import {
   getAllStudents,
@@ -31,7 +30,6 @@ import { verifyToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// all routes protected
 router.get('/', verifyToken, getAllStudents);
 router.get('/:id', verifyToken, getStudentById);
 router.post('/', verifyToken, createStudent);

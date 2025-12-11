@@ -1,78 +1,61 @@
-// controllers/studentController.js. //frontend call cheythal backend ezhuthi vekkande aa ezhuthi vekunna controllers ayirikum avide enth cheynam paranj kodukanne
-//edit annel edit work avanam angane
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-import Student from '../models/Student.js';
-
-// GET /api/students
-export const getAllStudents = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
-    const students = await Student.find().sort({ rollNumber: 1 });
-    res.json(students);
-  } catch (err) {
-    console.error('getAllStudents error:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
+    const { name, email, password } = req.body;
 
-// GET /api/students/:id
-export const getStudentById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const student = await Student.findById(id);
-    if (!student) return res.status(404).json({ message: 'Student not found' });
-    res.json(student);
-  } catch (err) {
-    console.error('getStudentById error:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-// POST /api/students
-export const createStudent = async (req, res) => {
-  try {
-    const { name, email, rollNumber, marks } = req.body;
-    // minimal validation
-    if (!name || !email || !rollNumber || !marks) {
-      return res.status(400).json({ message: 'Missing required fields' });
-    }
-
-    const existing = await Student.findOne({ $or: [{ email }, { rollNumber }] });
+    // already exists?
+    const existing = await User.findOne({ email });
     if (existing) {
-      return res.status(409).json({ message: 'Email or roll number already exists' });
+      return res.status(400).json({ message: 'User already exists' });
     }
 
-    const student = new Student({ name, email, rollNumber, marks });
-    await student.save();//mongoosein ullile oru mongodb query ann 
-    res.status(201).json(student);
+    // hash password
+    const hashed = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      name,
+      email,
+      password: hashed
+    });
+
+    await user.save();
+
+    res.json({ message: 'Registration successful' });
+
   } catch (err) {
-    console.error('createStudent error:', err);
+    console.error('Register error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// PUT /api/students/:id
-export const updateStudent = async (req, res) => {
+export const loginUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updates = req.body;
-    const student = await Student.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
-    if (!student) return res.status(404).json({ message: 'Student not found' });
-    res.json(student);
-  } catch (err) {
-    console.error('updateStudent error:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
+    const { email, password } = req.body;
 
-// DELETE /api/students/:id
-export const deleteStudent = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const student = await Student.findByIdAndDelete(id);//mongoose queryss
-    if (!student) return res.status(404).json({ message: 'Student not found' });
-    res.json({ message: 'Student deleted' });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+
+    // compare password
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ message: 'Invalid credentials' });
+
+    // create token
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      message: 'Login successful',
+      token
+    });
+
   } catch (err) {
-    console.error('deleteStudent error:', err);
+    console.error('Login error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };

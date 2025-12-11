@@ -3,6 +3,13 @@
 
 const API_BASE = '/api/students';
 
+// LOGIN ELEMENTS
+const loginSection = document.getElementById('login-section');
+const loginEmail = document.getElementById('login-email');
+const loginPassword = document.getElementById('login-password');
+const loginBtn = document.getElementById('login-btn');
+const logoutBtn = document.getElementById('logout-btn');
+
 const form = document.getElementById('student-form');
 const studentsList = document.getElementById('students-list');
 const formTitle = document.getElementById('form-title');
@@ -21,8 +28,69 @@ const s3Input = document.getElementById('subject3');
 const marksAccordion = document.getElementById('marks-accordion');
 const marksContent = document.getElementById('marks-content');
 
+// ---------------- LOGIN SYSTEM ----------------
+
+// LOGIN
+loginBtn.addEventListener('click', async () => {
+  const email = loginEmail.value.trim();
+  const password = loginPassword.value;
+
+  if (!email || !password) return alert('Enter email & password');
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      alert('Login successful');
+
+      loginSection.style.display = 'none';
+      logoutBtn.style.display = 'inline-block';
+
+      fetchStudents();
+    } else {
+      alert(data.message || 'Login failed');
+    }
+  } catch (err) {
+    alert('Login error');
+    console.error(err);
+  }
+});
+
+// LOGOUT
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('token');
+  alert('Logged out');
+
+  loginSection.style.display = 'block';
+  logoutBtn.style.display = 'none';
+
+  studentsList.innerHTML = '<tr><td colspan="8">Please login</td></tr>';
+});
+
+// ---------------- FETCH STUDENTS ----------------
+
 async function fetchStudents() {
-  const res = await fetch(API_BASE);
+  const token = localStorage.getItem('token');
+  if (!token) {
+    studentsList.innerHTML = '<tr><td colspan="8">Please login first</td></tr>';
+    return;
+  }
+
+  const res = await fetch(API_BASE, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    return alert(data.message || 'Failed to load students');
+  }
+
   const data = await res.json();
   renderStudents(data);
 }
@@ -33,7 +101,6 @@ function renderStudents(students) {
     return;
   }
   studentsList.innerHTML = students.map(s => studentRow(s)).join('');
-  // attach event listeners after render
   document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', onEdit));
   document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', onDelete));
 }
@@ -57,16 +124,20 @@ function studentRow(s) {
   `;
 }
 
-// simple escaper to avoid HTML injection
 function escapeHtml(str = '') {
   return String(str).replace(/[&<>"']/g, (m) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[m]));
 }
 
+// ---------------- SAVE STUDENT ----------------
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  const token = localStorage.getItem('token');
   const id = idInput.value;
+
   const payload = {
     name: nameInput.value.trim(),
     email: emailInput.value.trim(),
@@ -84,37 +155,42 @@ form.addEventListener('submit', async (e) => {
   }
 
   try {
+    let res;
     if (id) {
-      // update
-      const res = await fetch(`${API_BASE}/${id}`, {
+      res = await fetch(`${API_BASE}/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify(payload)
       });
-      if (!res.ok) throw new Error('Update failed');
     } else {
-      // create
-      const res = await fetch(API_BASE, {
+      res = await fetch(API_BASE, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify(payload)
       });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err?.message || 'Create failed');
-      }
     }
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.message || 'Operation failed');
+    }
+
     resetForm();
-    await fetchStudents();
+    fetchStudents();
+
   } catch (err) {
-    alert(err.message || 'Operation failed');
+    alert(err.message);
     console.error(err);
   }
 });
 
-cancelBtn.addEventListener('click', () => {
-  resetForm();
-});
+cancelBtn.addEventListener('click', resetForm);
 
 function resetForm() {
   idInput.value = '';
@@ -124,12 +200,21 @@ function resetForm() {
   form.reset();
 }
 
+// ---------------- EDIT STUDENT ----------------
+
 async function onEdit(e) {
   const id = e.currentTarget.dataset.id;
+  const token = localStorage.getItem('token');
+
   try {
-    const res = await fetch(`${API_BASE}/${id}`);
+    const res = await fetch(`${API_BASE}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
     if (!res.ok) throw new Error('Failed to fetch student');
+
     const student = await res.json();
+
     idInput.value = student._id;
     nameInput.value = student.name || '';
     emailInput.value = student.email || '';
@@ -137,34 +222,52 @@ async function onEdit(e) {
     s1Input.value = student.marks?.subject1 ?? 0;
     s2Input.value = student.marks?.subject2 ?? 0;
     s3Input.value = student.marks?.subject3 ?? 0;
+
     formTitle.textContent = 'Edit Student';
     saveBtn.textContent = 'Update';
     cancelBtn.style.display = 'inline-block';
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
   } catch (err) {
     alert('Could not load student for editing');
     console.error(err);
   }
 }
 
+// ---------------- DELETE STUDENT ----------------
+
 async function onDelete(e) {
   const id = e.currentTarget.dataset.id;
+  const token = localStorage.getItem('token');
+
   if (!confirm('Delete this student?')) return;
+
   try {
-    const res = await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+    const res = await fetch(`${API_BASE}/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
     if (!res.ok) throw new Error('Delete failed');
-    await fetchStudents();
+
+    fetchStudents();
+
   } catch (err) {
-    alert('Delete failed');
+    alert(err.message);
     console.error(err);
   }
 }
 
-// Accordion toggle functionality
+// ---------------- ACCORDION ----------------
 marksAccordion.addEventListener('click', () => {
   marksAccordion.classList.toggle('collapsed');
   marksContent.classList.toggle('collapsed');
 });
 
-// initial load
+// ---------------- INITIAL LOAD ----------------
+if (localStorage.getItem('token')) {
+  loginSection.style.display = 'none';
+  logoutBtn.style.display = 'inline-block';
+}
 fetchStudents();

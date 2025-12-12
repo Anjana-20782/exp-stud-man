@@ -29,10 +29,11 @@ async function register() {
   const data = await res.json();
 
   if (res.ok) {
-    // store token
+    // SAVE TOKEN
     localStorage.setItem("token", data.token);
-    alert("Registration successful!");
-    window.location.href = "/index.html"; // go to main page
+
+    // redirect to index page
+    window.location.href = "/index.html";
   } else {
     alert(data.message);
   }

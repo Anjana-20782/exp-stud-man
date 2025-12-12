@@ -1,19 +1,43 @@
 // auth.js
 
+// async function register() {
+//   const res = await fetch("/api/auth/register", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({
+//       name: document.getElementById("username").value, // changed from username → name
+//       email: document.getElementById("email").value,
+//       password: document.getElementById("password").value
+//     })
+//   });
+
+//   const data = await res.json();
+//   alert(data.message);
+// }
+
 async function register() {
   const res = await fetch("/api/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      name: document.getElementById("username").value, // changed from username → name
+      name: document.getElementById("username").value,
       email: document.getElementById("email").value,
       password: document.getElementById("password").value
     })
   });
 
   const data = await res.json();
-  alert(data.message);
+
+  if (res.ok) {
+    // store token
+    localStorage.setItem("token", data.token);
+    alert("Registration successful!");
+    window.location.href = "/index.html"; // go to main page
+  } else {
+    alert(data.message);
+  }
 }
+
 
 async function login() {
   const res = await fetch("/api/auth/login", {

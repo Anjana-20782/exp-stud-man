@@ -28,15 +28,6 @@ if (!token) {
   window.location.href = '/login.html';
 }
 
-// Display profile image
-const profileImg = document.getElementById("profile-img");
-const storedImg = localStorage.getItem("profileImage");
-
-if (storedImg && profileImg) {
-  profileImg.src = storedImg;
-  profileImg.style.display = "block";
-}
-
 
 // Fetch students
 async function fetchStudents() {

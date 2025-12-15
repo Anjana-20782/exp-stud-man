@@ -6,7 +6,9 @@ import jwt from "jsonwebtoken";
 // POST /api/auth/register
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    // const { name, email, password } = req.body;
+    const { name, email, password, profileImage } = req.body;
+
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields required" });
@@ -27,6 +29,7 @@ export const registerUser = async (req, res) => {
       password: hashedPassword
     });
 
+ 
     return res.status(201).json({
       message: "User registered successfully",
       userId: user._id
@@ -61,7 +64,10 @@ export const loginUser = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    return res.json({ message: "Login success", token });
+    // return res.json({ message: "Login success", token });
+    return res.json({message: "Login success",token,profileImage: user.profileImage // BASE64
+});
+
   } catch (err) {
     console.error("loginUser error:", err);
     return res.status(500).json({ message: "Server error" });

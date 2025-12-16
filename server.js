@@ -24,8 +24,18 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 //root login page
 app.get("/", (req, res) => {
-  res.redirect("/login.html");
+  res.redirect("/login");
 });
+
+// clean routes for auth pages
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "register.html"));
+});
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 

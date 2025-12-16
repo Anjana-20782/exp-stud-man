@@ -6,17 +6,17 @@
   <title>Register</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="auth-container">
-    <h2>Register</h2>
-    <input id="username" placeholder="Full Name" required /><br>
-    <input id="email" placeholder="Email" type="email" required /><br>
-    <input id="password" placeholder="Password" type="password" required /><br>
-    <input type="file" id="profileImage" accept="image/*" /><br>
-    <button onclick="register()">Register</button>
-    <p>Already have an account? <a href="/login">Login here</a></p>
+<body class="auth-page">
+  <div class="auth-card">
+    <h2>Create Account</h2>
+    <input id="username" placeholder="Full Name" />
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
+    <input id="profileImage" type="file" />
+    <button onclick="register()">Create Account</button>
+    <p>Already have an account? <a href="/login">Sign in</a></p>
   </div>
-
   <script src="auth.js"></script>
 </body>
+
 </html>

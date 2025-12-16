@@ -7,78 +7,87 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Top Navigation Bar -->
+  <nav class="topbar">
+    <div class="brand">Student Management</div>
+    <div class="top-actions">
+      <img id="profile-img" alt="Profile" />
+      <button class="logout" id="logout-btn">
+        <span class="logout-icon">⎋</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </nav>
+
   <main class="container">
-   
-
-    <h1>Student Management</h1>
-
     <!-- Form to add / edit student -->
-    <section id="form-section">
-
-      <div class="form-header-row">
-      <h2 id="form-title">Add Student</h2>
-
-  <div class="header-right">
-  <!-- profile image -->
-  <img id="profile-img" />
-
-  <!-- logout -->
-  <div class="logout" id="logout-btn">
-    <span class="logout-icon">⎋</span>
-    <span>Logout</span>
-  </div>
-
-  <!-- marks accordion -->
-  <div class="accordion-header collapsed" id="marks-accordion">
-    <span>Marks</span>
-    <span class="accordion-icon">▼</span>
-  </div>
-</div>
-
-</div>
+    <section id="form-section" class="card">
+      <div class="form-header">
+        <h2 id="form-title">Add Student</h2>
+        <div class="accordion-header collapsed" id="marks-accordion">
+          <span>Marks</span>
+          <span class="accordion-icon">▼</span>
+        </div>
+      </div>
 
       <form id="student-form">
         <input type="hidden" id="student-id" />
-        <div class="form-row">
-          <div class="form-left">
+
+        <!-- Basic Information -->
+        <div class="form-section">
+          <h3>Basic Information</h3>
+          <div class="grid">
             <div>
-              <input id="name" placeholder="Name" required />
+              <label for="name">Name</label>
+              <input id="name" placeholder="Enter student name" required />
             </div>
             <div>
-              <input id="email" placeholder="Email" type="email" required />
+              <label for="email">Email</label>
+              <input id="email" type="email" placeholder="Enter email address" required />
             </div>
             <div>
-              <input id="rollNumber" placeholder="Roll Number" required />
+              <label for="rollNumber">Roll Number</label>
+              <input id="rollNumber" placeholder="Enter roll number" required />
             </div>
-          </div>
-          <div class="form-right">
-            <div class="accordion-content collapsed" id="marks-content">
-                <div>
-                  <label>Physics</label>
-                  <input id="subject1" type="text" value="0" required />
-                </div>
-                <div>
-                  <label>Chemistry</label>
-                  <input id="subject2" type="text" value="0" required />
-                </div>
-                <div>
-                  <label>Biology</label>
-                  <input id="subject3" type="text" value="0" required />
-                </div>
-              </div>
           </div>
         </div>
-        <button type="submit" id="save-btn">Save</button>
-        <button type="button" id="cancel-btn" style="display:none">Cancel</button>
+
+        <!-- Marks Section (Collapsible) -->
+        <div class="marks-section">
+          <div class="accordion-content collapsed" id="marks-content">
+            <h3>Subject Marks</h3>
+            <div class="marks-grid">
+              <div>
+                <label for="subject1">Physics</label>
+                <input id="subject1" type="text" value="0" placeholder="0" required />
+              </div>
+              <div>
+                <label for="subject2">Chemistry</label>
+                <input id="subject2" type="text" value="0" placeholder="0" required />
+              </div>
+              <div>
+                <label for="subject3">Biology</label>
+                <input id="subject3" type="text" value="0" placeholder="0" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="actions">
+          <button type="submit" id="save-btn">Save Student</button>
+          <button type="button" id="cancel-btn" style="display:none">Cancel</button>
+        </div>
       </form>
     </section>
 
     <!-- Student list -->
-    <section class="students-section">
+    <section class="students-section card">
       <div class="section-header">
         <h2>All Students</h2>
         <div class="section-decoration"></div>
       </div>
+
       <div class="table-container">
         <table id="students-table">
           <thead>

@@ -21,6 +21,12 @@ const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
+
+//root login page
+app.get("/", (req, res) => {
+  res.redirect("/login.html");
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // auth routes
@@ -28,6 +34,8 @@ app.use('/api/auth', authRoutes);
 
 // protected student routes
 app.use('/api/students', studentRoutes);
+
+
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });

@@ -23,7 +23,7 @@ async function register() {
       name: document.getElementById("username").value,
       email: document.getElementById("email").value,
       password: document.getElementById("password").value,
-      profileImage: base64Image // ✅ optional
+      profileImage: base64Image //  optional
     })
   });
 
@@ -77,6 +77,9 @@ async function login() {
 
   if (res.ok) {
     localStorage.setItem("token", data.token);
+
+
+
 
     // ✅ Store base64 image
     if (data.profileImage) {

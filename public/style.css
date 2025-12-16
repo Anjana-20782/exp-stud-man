@@ -327,6 +327,24 @@ body {
   border: 2px solid #ddd;
 }
 
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #444;
+  margin-top: 8px;
+}
+
+.logout:hover {
+  color: #e53935;
+}
+
+.logout-icon {
+  font-size: 18px;
+}
+
 
 
 /* Responsive table */

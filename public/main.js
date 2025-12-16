@@ -21,12 +21,23 @@ const s3Input = document.getElementById('subject3');
 const marksAccordion = document.getElementById('marks-accordion');
 const marksContent = document.getElementById('marks-content');
 
-// Check login
-const token = localStorage.getItem("token");
-if (!token) {
-  alert('Please login first');
-  window.location.href = '/login.html';
+// LOGOUT
+const logoutBtn = document.getElementById("logout-btn");
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("profileImage");
+    window.location.href = "/login";
+  });
 }
+
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.href = "/login";
+}
+
 
 //profile
 const profileImg = document.getElementById("profile-img");

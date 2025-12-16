@@ -6,8 +6,10 @@ import jwt from "jsonwebtoken";
 // POST /api/auth/register
 export const registerUser = async (req, res) => {
   try {
-    // const { name, email, password } = req.body;
-    const { name, email, password, profileImage } = req.body;
+    // const { name, email, password, profileImage } = req.body;
+    const { name, email, password } = req.body;
+const profileImage = req.file ? `/uploads/${req.file.filename}` : null;
+
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields required" });
@@ -22,24 +24,21 @@ export const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // const user = await User.create({
-    //   name: name.trim(),
-    //   email: normEmail,
-    //   password: hashedPassword
-    // });
+//     const user = await User.create({
+//   name: name.trim(),
+//   email: normEmail,
+//   password: hashedPassword,
+//   profileImage // ✅ base64 stored
+// });
 
-    const user = await User.create({
+const user = await User.create({
   name: name.trim(),
   email: normEmail,
   password: hashedPassword,
-  profileImage // ✅ base64 stored
+  profileImage
 });
 
-    // return res.status(201).json({
-    //   message: "User registered successfully",
-    //   userId: user._id
-    // });
-
+  
     // create token after signup
 const token = jwt.sign(
   { id: user._id },

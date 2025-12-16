@@ -5,62 +5,52 @@
 //     method: "POST",
 //     headers: { "Content-Type": "application/json" },
 //     body: JSON.stringify({
-//       name: document.getElementById("username").value, // changed from username → name
+//       name: document.getElementById("username").value,
 //       email: document.getElementById("email").value,
-//       password: document.getElementById("password").value
-//     })
-//   });
-
-//   const data = await res.json();
-//   alert(data.message);
-// }
-
-async function register() {
-  const res = await fetch("/api/auth/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: document.getElementById("username").value,
-      email: document.getElementById("email").value,
-      password: document.getElementById("password").value,
-      profileImage: base64Image //  optional
-    })
-  });
-
-  const data = await res.json();
-
-  if (res.ok) {
-    // SAVE TOKEN
-    localStorage.setItem("token", data.token);
-
-    // redirect to index page
-    window.location.href = "/index.html";
-  } else {
-    alert(data.message);
-  }
-}
-
-
-// async function login() {
-//   const res = await fetch("/api/auth/login", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       email: document.getElementById("email").value,
-//       password: document.getElementById("password").value
+//       password: document.getElementById("password").value,
+//       profileImage: base64Image //  optional
 //     })
 //   });
 
 //   const data = await res.json();
 
 //   if (res.ok) {
-//     localStorage.setItem("token", data.token); // store JWT
-//     alert("Login Success!");
-//     window.location.href = "/index.html"; // redirect to student page
+//     // SAVE TOKEN
+//     localStorage.setItem("token", data.token);
+
+//     // redirect to index page
+//     window.location.href = "/index.html";
 //   } else {
 //     alert(data.message);
 //   }
 // }
+
+async function register() {
+  const formData = new FormData();
+  formData.append("name", document.getElementById("username").value);
+  formData.append("email", document.getElementById("email").value);
+  formData.append("password", document.getElementById("password").value);
+
+  const file = document.getElementById("profileImage").files[0];
+  if (file) {
+    formData.append("profileImage", file);
+  }
+
+  const res = await fetch("/api/auth/register", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+
+  if (res.ok) {
+    localStorage.setItem("token", data.token);
+    window.location.href = "/index.html";
+  } else {
+    alert(data.message);
+  }
+}
+
 
 
 async function login() {

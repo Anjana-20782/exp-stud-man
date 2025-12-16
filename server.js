@@ -38,6 +38,8 @@ app.get("/register", (req, res) => {
 
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
 
 // auth routes
 app.use('/api/auth', authRoutes);

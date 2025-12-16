@@ -19,7 +19,7 @@ body {
 }
 
 .auth-card {
-  width: 380px;
+  width: 400px;
   padding: 40px;
   background: rgba(20, 20, 28, 0.95);
   backdrop-filter: blur(20px);
@@ -27,9 +27,9 @@ body {
   box-shadow: 0 35px 100px rgba(0,0,0,0.7);
   border: 1px solid rgba(255,255,255,0.1);
   text-align: center;
-  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .auth-card::before {
@@ -39,13 +39,14 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #ff7ad9, #ffb86c);
+  background: linear-gradient(90deg, #ff7ad9, #ffb86c, #ff9bd5);
   border-radius: 24px 24px 0 0;
 }
 
 .auth-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 45px 120px rgba(0,0,0,0.8);
+  border-color: rgba(255,122,217,0.2);
 }
 
 .auth-card h2 {
@@ -57,21 +58,23 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.025em;
+  position: relative;
 }
 
 .auth-card input {
   width: 100%;
-  padding: 16px 18px;
+  padding: 16px 20px;
   margin-bottom: 20px;
   border-radius: 14px;
   border: 2px solid rgba(255,122,217,0.3);
   background: rgba(18, 18, 26, 0.9);
+  backdrop-filter: blur(10px);
   color: #fff;
   font-size: 16px;
   font-family: inherit;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
-  backdrop-filter: blur(10px);
+  position: relative;
 }
 
 .auth-card input:focus {
@@ -81,14 +84,24 @@ body {
   transform: translateY(-2px);
 }
 
+.auth-card input:hover:not(:focus) {
+  border-color: rgba(255,122,217,0.6);
+  background: rgba(18, 18, 26, 0.95);
+}
+
 .auth-card input::placeholder {
   color: #888;
   font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.auth-card input:focus::placeholder {
+  color: #aaa;
 }
 
 /* Special styling for file input */
 .auth-card input[type="file"] {
-  padding: 12px 16px;
+  padding: 14px 20px;
   border-style: dashed;
   background: rgba(255,122,217,0.05);
   cursor: pointer;
@@ -103,43 +116,49 @@ body {
   background: linear-gradient(135deg, #ff7ad9, #ffb86c);
   color: #000;
   border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  margin-right: 12px;
+  font-size: 14px;
+  margin-right: 14px;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(255,122,217,0.3);
 }
 
 .auth-card input[type="file"]::file-selector-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(255,122,217,0.4);
+  box-shadow: 0 4px 15px rgba(255,122,217,0.5);
 }
 
 .auth-card button {
   width: 100%;
-  padding: 16px;
+  padding: 18px 24px;
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
   background: linear-gradient(135deg, #ff7ad9, #ffb86c);
   color: #000;
-  margin-top: 12px;
-  transition: all 0.3s ease;
+  margin-top: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 8px 25px rgba(255,122,217,0.4);
   position: relative;
   overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .auth-card button:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 35px rgba(255,122,217,0.6);
+  filter: brightness(1.05);
 }
 
 .auth-card button:active {
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255,122,217,0.4);
 }
 
 .auth-card button::before {
@@ -149,8 +168,8 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s ease;
 }
 
 .auth-card button:hover::before {
@@ -185,7 +204,7 @@ body {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, #ff7ad9, #ffb86c);
-  transition: width 0.3s ease;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .auth-card a:hover::after {
@@ -645,9 +664,10 @@ button.delete-btn:hover {
 @media (max-width: 480px) {
   .auth-card {
     width: 90%;
-    max-width: 340px;
-    padding: 32px 24px;
+    max-width: 360px;
+    padding: 32px 28px;
     margin: 20px;
+    border-radius: 20px;
   }
 
   .auth-card h2 {
@@ -656,16 +676,19 @@ button.delete-btn:hover {
   }
 
   .auth-card input {
-    padding: 14px 16px;
+    padding: 16px 18px;
     font-size: 16px;
+    margin-bottom: 18px;
   }
 
   .auth-card button {
-    padding: 14px;
+    padding: 16px 20px;
     font-size: 15px;
+    margin-top: 12px;
   }
 
   .auth-card p {
     font-size: 14px;
+    margin-top: 20px;
   }
 }

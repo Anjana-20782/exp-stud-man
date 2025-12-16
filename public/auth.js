@@ -15,22 +15,6 @@
 //   alert(data.message);
 // }
 
-<<<<<<< HEAD
-=======
-let base64Image = null;
-
-document.getElementById("profileImage")?.addEventListener("change", function () {
-  const file = this.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    base64Image = reader.result; // BASE64
-  };
-  reader.readAsDataURL(file);
-});
-
->>>>>>> dev
 async function register() {
   const res = await fetch("/api/auth/register", {
     method: "POST",
@@ -44,7 +28,6 @@ async function register() {
   });
 
   const data = await res.json();
-<<<<<<< HEAD
 
   if (res.ok) {
     // SAVE TOKEN
@@ -54,18 +37,10 @@ async function register() {
     window.location.href = "/index.html";
   } else {
     alert(data.message);
-=======
-  alert(data.message);
-
-  if (res.ok) {
-    window.location.href = "/login.html";
->>>>>>> dev
   }
 }
 
 
-<<<<<<< HEAD
-=======
 // async function login() {
 //   const res = await fetch("/api/auth/login", {
 //     method: "POST",
@@ -88,7 +63,6 @@ async function register() {
 // }
 
 
->>>>>>> dev
 async function login() {
   const res = await fetch("/api/auth/login", {
     method: "POST",

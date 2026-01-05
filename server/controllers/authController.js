@@ -24,6 +24,12 @@ const profileImage = req.file ? `/uploads/${req.file.filename}` : null;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+//     const user = await User.create({
+//   name: name.trim(),
+//   email: normEmail,
+//   password: hashedPassword,
+//   profileImage // ✅ base64 stored
+// });
 
 const user = await User.create({
   name: name.trim(),
@@ -61,12 +67,12 @@ export const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email: normEmail });
     if (!user) {
-      return res.status(400).json({ message: "Invalid email" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     
